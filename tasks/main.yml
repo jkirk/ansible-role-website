@@ -27,6 +27,7 @@
     dest: /etc/apache2/sites-enabled/000-default.conf
     state: link
   notify: reload apache2
+  when: default_website is defined and default_website == true
 - name: Deploy apache configuration for {{ website }}
   template: src=apache2/sites-available/website.conf.j2 dest=/etc/apache2/sites-available/{{ website }}.conf
   notify: reload apache2

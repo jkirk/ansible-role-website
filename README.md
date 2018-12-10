@@ -16,6 +16,7 @@ Role Variables
 *  (optional) documentroot: DocumentRoot will be $documentroot/$website. If documentroot is not given it defaults to /var/www/html/$website
 *  (optional) webalias: Set ServerAlias (list of aliases allowed)
 *  (optional) rootredirection: RedirectMatch ^/$ to a given destination
+*  (optional) default_website: Set 000-default.conf symlink for this website
 *  (optional) letsencrypt: Enable SSL via letsencrypt (role 'letsencrypt' needs to be called before calling this role)
 
 Dependencies
