@@ -1,16 +1,16 @@
 ---
 
-- name: Make sure apache2 is installed
+- name: Make sure apache2 and friends are installed
   apt: name={{ item }} state=present
   with_items:
   - apache2
-  - libapache2-mod-perl2
   - libapache2-mod-perl2
 - name: Make sure all the Apache modules are enabled
   apache2_module:
     state: present
     name: "{{ item }}"
   with_items:
+    - cgi
     - ssl
     - proxy
     - proxy_http
