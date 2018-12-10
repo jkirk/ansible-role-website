@@ -1,0 +1,36 @@
+---
+# Role: website
+#
+# Description:
+#
+# This role deploys the apache website configuration.
+#
+# Usage:
+#
+#   roles:
+#     - { role: website, website: 'demo.example.at', webalias: 'www.demo.example.at', rootredirection: 'https://demo2.example.com', serveradmin: 'tech@example.at', letsencrypt: true }
+#
+# Parameters:
+#
+#  website: Set ServerName in the virtual host configuration and deploy (and enable) it as $website.conf in /etc/apache2/site-available
+#  serveradmin: Set ServerAdmin
+#  (optional) documentroot: DocumentRoot will be $documentroot/$website. If documentroot is not given it defaults to /var/www/html/$website
+#  (optional) webalias: Set ServerAlias (list of aliases allowed)
+#  (optional) rootredirection: RedirectMatch ^/$ to a given destination
+#  (optional) letsencrypt: Enable SSL via letsencrypt (role 'letsencrypt' needs to be called before calling this role)
+#
+#
+- include_tasks: apache.yml
+- name: Set default website (000-default.conf)
+  file:
+    src: "{{ website }}.conf"
+    dest: /etc/apache2/sites-enabled/000-default.conf
+    state: link
+  notify: reload apache2
+- name: Deploy apache configuration for {{ website }}
+  template: src=apache2/sites-available/website.conf.j2 dest=/etc/apache2/sites-available/{{ website }}.conf
+  notify: reload apache2
+- name: Enable apache configuration for {{ website }}
+  file: src=/etc/apache2/sites-available/{{ website }}.conf dest=/etc/apache2/sites-enabled/{{ website }}.conf state=link
+  notify: reload apache2
+  when: not ansible_check_mode

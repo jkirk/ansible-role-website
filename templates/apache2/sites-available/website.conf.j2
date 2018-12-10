@@ -1,0 +1,101 @@
+{{ ansible_managed }}
+
+Define DOMAIN {{ website }}
+{% if webalias is defined %}
+Define DOMAINALIAS {{ webalias }}
+{% endif %}
+
+<VirtualHost *:80>
+    ServerName ${DOMAIN}
+{% if webalias is defined %}
+    ServerAlias ${DOMAINALIAS}
+{% endif %}
+    ServerAdmin  {{ serveradmin|default('webmaster@localhost') }}
+{% if httpsonly|default(false) %}
+    Redirect permanent / https://${DOMAIN}/
+{% else %}
+{% if rootredirection is defined %}
+    RedirectMatch "^/$" "{{ rootredirection }}"
+{% else %}
+    DocumentRoot {{ documentroot|default('/var/www/html') }}/${DOMAIN}
+{% endif %} {# rootredirection #}
+
+{% if proxy is defined %}
+    ProxyRequests     Off
+    ProxyPreserveHost On
+{% if nodecode is defined %}
+    AllowEncodedSlashes NoDecode
+{% endif %}
+    <Proxy *>
+      Order deny,allow
+      Allow from all
+    </Proxy>
+    ProxyPass /.well-known !
+    ProxyPass / {{ proxy }}
+{% if nodecode is defined %}
+    ProxyPassReverse / {{ proxyreverse }}
+{% else %}
+    ProxyPassReverse / {{ proxy }}
+{% endif %} {# nodecode #}
+{% endif %} {# proxy defined #}
+{% endif %} {# httpsonly #}
+
+    CustomLog ${APACHE_LOG_DIR}/${DOMAIN}-access.log combined
+    ErrorLog ${APACHE_LOG_DIR}/${DOMAIN}-error.log
+</VirtualHost>
+
+<IfModule mod_ssl.c>
+    <VirtualHost *:443>
+        ServerName ${DOMAIN}
+        ServerAdmin  {{ serveradmin|default('webmaster@localhost') }}
+{% if webalias is defined %}
+        ServerAlias ${DOMAINALIAS}
+{% endif %}
+{% if rootredirection is defined %}
+        RedirectMatch "^/$" "{{ rootredirection }}"
+{% else %}
+        DocumentRoot {{ documentroot|default('/var/www/html') }}/${DOMAIN}
+{% endif %} {# rootredirection #}
+
+        SSLEngine on
+{% if letsencrypt is defined and letsencrypt %}
+        SSLCertificateFile    /etc/ssl/letsencrypt/certs/${DOMAIN}/fullchain.pem
+        SSLCertificateKeyFile /etc/ssl/letsencrypt/certs/${DOMAIN}/privkey.pem
+{% else %}
+{% if cert is defined and cert %}
+        SSLCertificateFile    /etc/ssl/certs/${DOMAIN}.crt
+        SSLCertificateKeyFile /etc/ssl/private/{{ ansible_fqdn }}.key
+{% else %}
+        SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
+        SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+{% endif %} {# cert is defined #}
+{% endif %} {# letencrypt is defined #}
+
+{% if proxy is defined %}
+        ProxyRequests     Off
+        ProxyPreserveHost On
+{% if nodecode is defined %}
+        AllowEncodedSlashes NoDecode
+{% endif %}
+        <Proxy *>
+          Order deny,allow
+          Allow from all
+        </Proxy>
+        ProxyPass /.well-known !
+        ProxyPass / {{ proxy }}
+{% if nodecode is defined %}
+        ProxyPassReverse / {{ proxyreverse }}
+{% else %}
+        ProxyPassReverse / {{ proxy }}
+{% endif %}
+
+        #RedirectPermanent / http://localhost:8090/
+        #RewriteEngine on
+        #RewriteRule ^(.*)$ http://localhost:8090$1 [P,L]
+{% endif %}
+        CustomLog ${APACHE_LOG_DIR}/${DOMAIN}-access-ssl.log combined
+        ErrorLog ${APACHE_LOG_DIR}/${DOMAIN}-error-ssl.log
+    </VirtualHost>
+</IfModule>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr

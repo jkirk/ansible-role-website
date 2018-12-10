@@ -1,0 +1,14 @@
+---
+
+- name: Make sure apache2 is installed
+  apt: name={{ item }} state=present
+  with_items:
+  - apache2
+- name: Make sure all the Apache modules are enabled
+  apache2_module:
+    state: present
+    name: "{{ item }}"
+  with_items:
+    - ssl
+    - proxy
+    - proxy_http
