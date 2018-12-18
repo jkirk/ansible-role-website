@@ -12,7 +12,8 @@ Role Variables
 --------------
 
 *  website: Set ServerName in the virtual host configuration and deploy (and enable) it as $website.conf in /etc/apache2/site-available
-*  serveradmin: Set ServerAdmin
+*  customconf: Path of the custom configuration. Usually sits in files/apache2-sites
+*  serveradmin: Set ServerAdmin (can be omitted, if customconf is set)
 *  (optional) documentroot: DocumentRoot will be $documentroot/$website. If documentroot is not given it defaults to /var/www/html/$website
 *  (optional) webalias: Set ServerAlias (list of aliases allowed)
 *  (optional) rootredirection: RedirectMatch ^/$ to a given destination

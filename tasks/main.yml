@@ -21,6 +21,18 @@
 #
 #
 - include_tasks: apache.yml
+- name: Deploy apache configuration for {{ website }}
+  template: src=apache2/sites-available/website.conf.j2 dest=/etc/apache2/sites-available/{{ website }}.conf
+  notify: reload apache2
+  when: not customconf is defined
+- name: Deploy custom apache configuration for {{ website }}
+  copy: src={{ customconf }} dest=/etc/apache2/sites-available/{{ website }}.conf
+  notify: reload apache2
+  when: customconf is defined
+- name: Enable apache configuration for {{ website }}
+  file: src=/etc/apache2/sites-available/{{ website }}.conf dest=/etc/apache2/sites-enabled/{{ website }}.conf state=link
+  notify: reload apache2
+  when: not ansible_check_mode
 - name: Set default website (000-default.conf)
   file:
     src: "{{ website }}.conf"
@@ -28,10 +40,3 @@
     state: link
   notify: reload apache2
   when: default_website is defined and default_website == true
-- name: Deploy apache configuration for {{ website }}
-  template: src=apache2/sites-available/website.conf.j2 dest=/etc/apache2/sites-available/{{ website }}.conf
-  notify: reload apache2
-- name: Enable apache configuration for {{ website }}
-  file: src=/etc/apache2/sites-available/{{ website }}.conf dest=/etc/apache2/sites-enabled/{{ website }}.conf state=link
-  notify: reload apache2
-  when: not ansible_check_mode
