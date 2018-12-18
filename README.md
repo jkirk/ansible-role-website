@@ -17,6 +17,8 @@ Role Variables
 *  (optional) webalias: Set ServerAlias (list of aliases allowed)
 *  (optional) rootredirection: RedirectMatch ^/$ to a given destination
 *  (optional) default_website: Set 000-default.conf symlink for this website
+*  (optional) scriptaliasurl: Set URL of ScriptAlias to "/$scriptalias" and Path to "$documentroot/$scriptalias"
+*  (optional) scriptaliaspath: Set Path of ScriptAlias to "$documentroot/$scriptaliaspath" (if $scriptaliasurl is defined)
 *  (optional) letsencrypt: Enable SSL via letsencrypt (role 'letsencrypt' needs to be called before calling this role)
 
 Dependencies
@@ -30,6 +32,16 @@ Example Playbook
 ```
   roles:
     - { role: website, website: 'demo.example.at', webalias: 'www.demo.example.at', rootredirection: 'https://demo2.example.com', serveradmin: 'webmaster@example.at', letsencrypt: true }
+```
+
+or, the newer syntax:
+```
+  tasks:
+  - import_role:
+      name: website
+    vars:
+      website: "demo.example.at"
+      scriptaliasurl: "cgi-bin/"
 ```
 
 License

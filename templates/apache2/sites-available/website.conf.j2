@@ -19,7 +19,9 @@ Define DOMAINALIAS {{ webalias }}
 {% else %}
     DocumentRoot {{ documentroot|default('/var/www/html') }}/${DOMAIN}
 {% endif %} {# rootredirection #}
-
+{% if scriptaliasurl is defined %}
+    ScriptAlias "/{{ scriptaliasurl }}" "{{ documentroot|default('/var/www/html') }}/${DOMAIN}/{{ scriptaliaspath|default(scriptaliasurl) }}"
+{% endif %} {# scriptaliasurl #}
 {% if proxy is defined %}
     ProxyRequests     Off
     ProxyPreserveHost On
@@ -56,7 +58,9 @@ Define DOMAINALIAS {{ webalias }}
 {% else %}
         DocumentRoot {{ documentroot|default('/var/www/html') }}/${DOMAIN}
 {% endif %} {# rootredirection #}
-
+{% if scriptaliasurl is defined %}
+        ScriptAlias "/{{ scriptaliasurl }}" "{{ documentroot|default('/var/www/html') }}/${DOMAIN}/{{ scriptaliaspath|default(scriptaliasurl) }}"
+{% endif %} {# scriptaliasurl #}
         SSLEngine on
 {% if letsencrypt is defined and letsencrypt %}
         SSLCertificateFile    /etc/ssl/letsencrypt/certs/${DOMAIN}/fullchain.pem
