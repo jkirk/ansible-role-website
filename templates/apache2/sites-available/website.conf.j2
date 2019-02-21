@@ -19,6 +19,14 @@ Define DOMAINALIAS {{ webalias }}
 {% else %}
     DocumentRoot {{ documentroot|default('/var/www/html') }}/${DOMAIN}
 {% endif %} {# rootredirection #}
+    <Directorymatch "^/.*/\.git+/">
+      Order deny,allow
+      Deny from all
+    </Directorymatch>
+    <Files ~ "^\.git">
+      Order allow,deny
+      Deny from all
+    </Files>
 {% if scriptaliasurl is defined %}
     ScriptAlias "/{{ scriptaliasurl }}" "{{ documentroot|default('/var/www/html') }}/${DOMAIN}/{{ scriptaliaspath|default(scriptaliasurl) }}"
 {% endif %} {# scriptaliasurl #}
@@ -58,6 +66,14 @@ Define DOMAINALIAS {{ webalias }}
 {% else %}
         DocumentRoot {{ documentroot|default('/var/www/html') }}/${DOMAIN}
 {% endif %} {# rootredirection #}
+        <Directorymatch "^/.*/\.git+/">
+          Order deny,allow
+          Deny from all
+        </Directorymatch>
+        <Files ~ "^\.git">
+          Order allow,deny
+          Deny from all
+        </Files>
 {% if scriptaliasurl is defined %}
         ScriptAlias "/{{ scriptaliasurl }}" "{{ documentroot|default('/var/www/html') }}/${DOMAIN}/{{ scriptaliaspath|default(scriptaliasurl) }}"
 {% endif %} {# scriptaliasurl #}
