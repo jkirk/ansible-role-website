@@ -4,7 +4,6 @@
   apt:
     name:
       - apache2
-      - libapache2-mod-perl2
     state: present
 - name: Make sure all the Apache modules are enabled
   apache2_module:
