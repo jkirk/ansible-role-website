@@ -18,7 +18,7 @@ Define DOMAINALIAS {{ webalias }}
     RedirectMatch "^/$" "{{ rootredirection }}"
 {% else %}
     DocumentRoot {{ documentroot|default('/var/www/html') }}/${DOMAIN}
-{% endif %} {# rootredirection #}
+{% endif %}{# rootredirection #}
     <Directorymatch "^/.*/\.git+/">
       Order deny,allow
       Deny from all
@@ -29,7 +29,7 @@ Define DOMAINALIAS {{ webalias }}
     </Files>
 {% if scriptaliasurl is defined %}
     ScriptAlias "/{{ scriptaliasurl }}" "{{ documentroot|default('/var/www/html') }}/${DOMAIN}/{{ scriptaliaspath|default(scriptaliasurl) }}"
-{% endif %} {# scriptaliasurl #}
+{% endif %}{# scriptaliasurl #}
 {% if proxy is defined %}
     ProxyRequests     Off
     ProxyPreserveHost On
@@ -46,12 +46,15 @@ Define DOMAINALIAS {{ webalias }}
     ProxyPassReverse / {{ proxyreverse }}
 {% else %}
     ProxyPassReverse / {{ proxy }}
-{% endif %} {# nodecode #}
-{% endif %} {# proxy defined #}
-{% endif %} {# httpsonly #}
-
+{% endif %}{# nodecode #}
+{% endif %}{# proxy defined #}
+{% endif %}{# httpsonly #}
     CustomLog ${APACHE_LOG_DIR}/${DOMAIN}-access.log combined
     ErrorLog ${APACHE_LOG_DIR}/${DOMAIN}-error.log
+{% if custom_fragment is defined %}
+    ## Custom Fragment ##
+    {{ custom_fragment }}
+{% endif %}
 </VirtualHost>
 
 <IfModule mod_ssl.c>
@@ -65,7 +68,7 @@ Define DOMAINALIAS {{ webalias }}
         RedirectMatch "^/$" "{{ rootredirection }}"
 {% else %}
         DocumentRoot {{ documentroot|default('/var/www/html') }}/${DOMAIN}
-{% endif %} {# rootredirection #}
+{% endif %}{# rootredirection #}
         <Directorymatch "^/.*/\.git+/">
           Order deny,allow
           Deny from all
@@ -76,7 +79,7 @@ Define DOMAINALIAS {{ webalias }}
         </Files>
 {% if scriptaliasurl is defined %}
         ScriptAlias "/{{ scriptaliasurl }}" "{{ documentroot|default('/var/www/html') }}/${DOMAIN}/{{ scriptaliaspath|default(scriptaliasurl) }}"
-{% endif %} {# scriptaliasurl #}
+{% endif %}{# scriptaliasurl #}
         SSLEngine on
 {% if letsencrypt is defined and letsencrypt %}
         SSLCertificateFile    /etc/ssl/letsencrypt/certs/${DOMAIN}/fullchain.pem
@@ -88,8 +91,8 @@ Define DOMAINALIAS {{ webalias }}
 {% else %}
         SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
         SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
-{% endif %} {# cert is defined #}
-{% endif %} {# letencrypt is defined #}
+{% endif %}{# cert is defined #}
+{% endif %}{# letencrypt is defined #}
 
 {% if proxy is defined %}
         ProxyRequests     Off
@@ -115,6 +118,10 @@ Define DOMAINALIAS {{ webalias }}
 {% endif %}
         CustomLog ${APACHE_LOG_DIR}/${DOMAIN}-access-ssl.log combined
         ErrorLog ${APACHE_LOG_DIR}/${DOMAIN}-error-ssl.log
+{% if custom_fragment is defined %}
+        ## Custom Fragment ##
+        {{ custom_fragment }}
+{% endif %}
     </VirtualHost>
 </IfModule>
 
