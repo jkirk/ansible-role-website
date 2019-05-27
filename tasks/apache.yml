@@ -13,3 +13,4 @@
     - ssl
     - proxy
     - proxy_http
+    - rewrite
