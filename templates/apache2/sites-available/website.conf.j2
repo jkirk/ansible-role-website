@@ -3,22 +3,22 @@
 Define DOMAIN {{ website_domain }}
 {% if website_webalias is defined %}
 Define DOMAINALIAS {{ website_webalias }}
-{% endif %}
+{% endif %}{# website_webalias is defined #}
 
 <VirtualHost *:80>
     ServerName ${DOMAIN}
-{% if webalias is defined %}
+{% if website_webalias is defined %}
     ServerAlias ${DOMAINALIAS}
-{% endif %}
+{% endif %}{# website_webalias is defined #}
     ServerAdmin  {{ website_serveradmin|default('webmaster@localhost') }}
-{% if website_httpsonly|default(false) %}
+{% if website_httpsonly %}
     Redirect permanent / https://${DOMAIN}/
 {% else %}
 {% if website_rootredirection is defined %}
     RedirectMatch "^/$" "{{ rootredirection }}"
 {% else %}
     DocumentRoot {{ website_documentroot_base|default('/var/www/html') }}/${DOMAIN}
-{% endif %}{# website_rootredirection #}
+{% endif %}{# website_rootredirection is defined #}
     <Directorymatch "^/.*/\.git+/">
       Order deny,allow
       Deny from all
@@ -44,7 +44,7 @@ Define DOMAINALIAS {{ website_webalias }}
     ProxyPassReverse / {{ website_proxyreverse }}
 {% else %}
     ProxyPassReverse / {{ website_proxy }}
-{% endif %}{# website_proxyreverse is defined }
+{% endif %}{# website_proxyreverse is defined #}
 {% endif %}{# website_proxy defined #}
 {% endif %}{# website_httpsonly #}
     CustomLog ${APACHE_LOG_DIR}/${DOMAIN}-access.log combined
@@ -52,7 +52,7 @@ Define DOMAINALIAS {{ website_webalias }}
 {% if website_custom_fragment is defined %}
     ## Custom Fragment ##
     {{ website_custom_fragment }}
-{% endif %}
+{% endif %}{# website_custom_fragment is defined #}
 </VirtualHost>
 
 <IfModule mod_ssl.c>
@@ -61,12 +61,12 @@ Define DOMAINALIAS {{ website_webalias }}
         ServerAdmin  {{ website_serveradmin|default('webmaster@localhost') }}
 {% if website_webalias is defined %}
         ServerAlias ${DOMAINALIAS}
-{% endif %}
+{% endif %}{# website_webalias is defined #}
 {% if website_rootredirection is defined %}
         RedirectMatch "^/$" "{{ rootredirection }}"
 {% else %}
         DocumentRoot {{ website_documentroot_base|default('/var/www/html') }}/${DOMAIN}
-{% endif %}{# website_rootredirection #}
+{% endif %}{# website_rootredirection is defined #}
         <Directorymatch "^/.*/\.git+/">
           Order deny,allow
           Deny from all
@@ -77,9 +77,9 @@ Define DOMAINALIAS {{ website_webalias }}
         </Files>
 {% if website_scriptalias_url is defined %}
         ScriptAlias "/{{ website_scriptalias_url }}" "{{ website_documentroot_base|default('/var/www/html') }}/${DOMAIN}/{{ website_scriptalias_path|default(website_scriptalias_url) }}"
-{% endif %}{# website_scriptalias_url #}
+{% endif %}{# website_scriptalias_url is defined #}
         SSLEngine on
-{% if website_letsencrypt is defined and website_letsencrypt %}
+{% if website_letsencrypt %}
         SSLCertificateFile    /etc/ssl/letsencrypt/certs/${DOMAIN}/fullchain.pem
         SSLCertificateKeyFile /etc/ssl/letsencrypt/certs/${DOMAIN}/privkey.pem
 {% else %}
@@ -90,7 +90,7 @@ Define DOMAINALIAS {{ website_webalias }}
         SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
         SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
 {% endif %}{# cert is defined #}
-{% endif %}{# letencrypt is defined #}
+{% endif %}{# website_letsencrypt #}
 
 {% if website_proxy is defined %}
         ProxyRequests     Off
@@ -106,14 +106,14 @@ Define DOMAINALIAS {{ website_webalias }}
         ProxyPassReverse / {{ website_proxyreverse }}
 {% else %}
         ProxyPassReverse / {{ website_proxy }}
-{% endif %}{# website_proxyreverse is defined }
+{% endif %}{# website_proxyreverse is defined #}
 {% endif %}{# website_proxy defined #}
         CustomLog ${APACHE_LOG_DIR}/${DOMAIN}-access-ssl.log combined
         ErrorLog ${APACHE_LOG_DIR}/${DOMAIN}-error-ssl.log
 {% if website_custom_fragment is defined %}
         ## Custom Fragment ##
         {{ website_custom_fragment }}
-{% endif %}
+{% endif %}{# website_custom_fragment is defined #}
     </VirtualHost>
 </IfModule>
 
