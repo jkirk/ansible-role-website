@@ -13,47 +13,49 @@ None.
 Role Variables
 --------------
 
-These variables are set in defaults/main.yml:
+These variables are set in `defaults/main.yml`:
 ```yaml
 ---
 # defaults file for ansible-role-website
 
-# Set ServerName in the virtual host configuration and deploy (and enable) it as $website.conf in /etc/apache2/site-available
-website: 'demo.example.com'
+# Set ServerName in the virtual host configuration and deploy (and enable) it as /etc/apache2/site-available/$website_domain.conf
+website_domain: 'demo.example.com'
 
 # Name of the custom configuration file which should be used instead of the the website template.
-# It will then be placed in /etc/apache2/sites-available/$website.conf
+# It will then be placed in /etc/apache2/sites-available/$website_domain.conf
 #
-# customconf: 'demo.example.conf'
+# website_customconf: 'demo.example.conf'
 
-# Set ServerAdmin (can be omitted, if customconf is set)
-serveradmin: 'webmaster@example.com'
+# Set ServerAdmin (can be omitted, if website_website_customconf: is set)
+website_serveradmin: 'webmaster@example.com'
 
-# DocumentRoot will be $documentroot/$website. If documentroot is not given, DocumentRoot defaults to /var/www/html/$website
-# TODO: should be renamed to documentroot_base
-# documentroot: '/srv/www'
+# DocumentRoot will be $website_documentroot_base/$website_domain. If website_documentroot_base is not given, DocumentRoot defaults to /var/www/html/$website
+# website_documentroot_base: '/srv/www'
 
 # Set ServerAlias
 # TODO: (list of aliases allowed)
-# webalias: 'demo2.example.com'
+# website_webalias: 'demo2.example.com'
 
 # RedirectMatch ^/$ to a given destination
-# rootredirection: 'https://othersite.example.com'
+# website_rootredirection: 'https://othersite.example.com'
 
 # Set 000-default.conf symlink for this website
-default_website: false
+website_default: false
 
-# Set ScriptAlias $scriptaliasurl to "$documentroot/$scriptaliasurl"
-# scriptaliasurl: 'cgi-bin/'
+# Set ScriptAlias $website_scriptalias_url to "$website_documentroot_base/$website_scriptalias_url"
+# website_scriptalias_url: 'cgi-bin/'
 
-# Set ScriptAlias $scriptaliasurl to "$documentroot/$scriptaliaspath" instead of "$documentroot/$scriptaliasurl"
-# scriptaliaspath: 'myapp'
+# Set ScriptAlias $website_scriptalias_url to "$website_documentroot_base/$website_scriptalias_path" instead of "$website_documentroot_base/$website_scriptalias_url"
+# website_scriptalias_path: 'myapp'
 
-# Enable SSL via letsencrypt (role 'letsencrypt' needs to be called before setting this to True)
-letsencrypt: false
+# Enable SSL via website_letsencrypt (role 'website_letsencrypt' needs to be called before setting this to True)
+website_letsencrypt: false
+
+# Always redirect http to https:
+website_httpsonly: false
 
 # Put custom Apache configuration fragment in vhost section
-# custom_fragment: |
+# website_custom_fragment: |
 #     <Directory /srv/www/${DOMAIN}>
 #       Options -Indexes +FollowSymLinks
 #       AllowOverride All
@@ -63,30 +65,30 @@ letsencrypt: false
 Dependencies
 ------------
 
-None, but it might be a good idea to use the role [letsencrypt](https://github.com/jkirk/ansible-role-letsencrypt) to deploy Let's Encrypt for the websites.
+None, but it might be a good idea to use the role [website_letsencrypt](https://github.com/jkirk/ansible-role-website_letsencrypt) to deploy Let's Encrypt for the websites.
 
 Examples
 --------
 
 ```
   roles:
-    - { role: jkirk.website, website: 'demo.example.at', webalias: 'www.demo.example.at', rootredirection: 'https://demo2.example.com', serveradmin: 'webmaster@example.at', letsencrypt: true }
+    - { role: jkirk.website, website_domain: 'demo.example.at', website_webalias: 'www.demo.example.at', website_rootredirection: 'https://demo2.example.com', website_serveradmin: 'webmaster@example.at', website_letsencrypt: true }
 ```
 
 or:
 ```
   roles:
     - role: jkirk.website
-      website: 'demo.example.com'
-      webalias: 'www.example.com'
+      website_domain: 'demo.example.com'
+      website_webalias: 'www.example.com'
 
-      letsencrypt: true
-      httpsonly: true
+      website_letsencrypt: true
+      website_httpsonly: true
 
-      documentroot: '/srv/www'
-      serveradmin: 'tech@example.com'
-      custom_fragment: |
-       # custom_fragment from config
+      website_documentroot_base: '/srv/www'
+      website_serveradmin: 'tech@example.com'
+      website_custom_fragment: |
+       # website_custom_fragment from config
                <Directory /srv/www/${DOMAIN}>
                  Options -Indexes +FollowSymLinks
                  AllowOverride All
