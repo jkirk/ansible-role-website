@@ -1,6 +1,8 @@
 website
 =======
 
+[![Build Status](https://travis-ci.com/jkirk/ansible-role-website.svg?branch=master)](https://travis-ci.com/jkirk/ansible-role-website)
+
 A simple to role to deploy websites.
 
 Requirements
