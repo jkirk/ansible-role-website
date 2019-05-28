@@ -20,4 +20,4 @@
     dest: /etc/apache2/sites-enabled/000-default.conf
     state: link
   notify: reload apache2
-  when: default_website is defined and default_website == true
+  when: default_website|bool
