@@ -26,7 +26,7 @@ website_domain: 'demo.example.com'
 #
 # website_customconf: 'demo.example.conf'
 
-# Set ServerAdmin (can be omitted, if website_website_customconf: is set)
+# Set ServerAdmin (can be omitted, if website_customconf is set)
 website_serveradmin: 'webmaster@example.com'
 
 # DocumentRoot will be $website_documentroot_base/$website_domain. If website_documentroot_base is not given, DocumentRoot defaults to /var/www/html/$website
@@ -41,6 +41,15 @@ website_serveradmin: 'webmaster@example.com'
 
 # Set 000-default.conf symlink for this website
 website_default: false
+
+# Set "ProxyPass / $website_proxy" and "ProxyPassReverse / $website_proxy" (if website_proxyreverse is not defined)
+# website_proxy: 'http://localhost:8080'
+#
+# Set "ProxyPassReverse / $website_proxyreverse"
+# website_proxyreverse: 'http://localhost:8080'
+#
+# Set "AllowEncodedSlashes" to 'On' (not recommended), 'Off' (default) or 'NoDecode'
+website_encoded_slashes: 'Off'
 
 # Set ScriptAlias $website_scriptalias_url to "$website_documentroot_base/$website_scriptalias_url"
 # website_scriptalias_url: 'cgi-bin/'

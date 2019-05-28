@@ -25,6 +25,15 @@ website_serveradmin: 'webmaster@example.com'
 # Set 000-default.conf symlink for this website
 website_default: false
 
+# Set "ProxyPass / $website_proxy" and "ProxyPassReverse / $website_proxy" (if website_proxyreverse is not defined)
+# website_proxy: 'http://localhost:8080'
+#
+# Set "ProxyPassReverse / $website_proxyreverse"
+# website_proxyreverse: 'http://localhost:8080'
+#
+# Set "AllowEncodedSlashes" to 'On' (not recommended), 'Off' (default) or 'NoDecode'
+website_encoded_slashes: 'Off'
+
 # Set ScriptAlias $website_scriptalias_url to "$website_documentroot_base/$website_scriptalias_url"
 # website_scriptalias_url: 'cgi-bin/'
 
