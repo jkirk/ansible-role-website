@@ -11,22 +11,57 @@ None.
 Role Variables
 --------------
 
-*  website: Set ServerName in the virtual host configuration and deploy (and enable) it as $website.conf in /etc/apache2/site-available
-*  customconf: Path of the custom configuration. Usually sits in files/apache2-sites
-*  serveradmin: Set ServerAdmin (can be omitted, if customconf is set)
-*  (optional) documentroot: DocumentRoot will be $documentroot/$website. If documentroot is not given it defaults to /var/www/html/$website
-*  (optional) webalias: Set ServerAlias (list of aliases allowed)
-*  (optional) rootredirection: RedirectMatch ^/$ to a given destination
-*  (optional) default_website: Set 000-default.conf symlink for this website
-*  (optional) scriptaliasurl: Set URL of ScriptAlias to "/$scriptalias" and Path to "$documentroot/$scriptalias"
-*  (optional) scriptaliaspath: Set Path of ScriptAlias to "$documentroot/$scriptaliaspath" (if $scriptaliasurl is defined)
-*  (optional) letsencrypt: Enable SSL via letsencrypt (role 'letsencrypt' needs to be called before calling this role)
-*  (optional) custom_fragment: Custom Apache configuration
+These variables are set in defaults/main.yml:
+```yaml
+---
+# defaults file for ansible-role-website
+
+# Set ServerName in the virtual host configuration and deploy (and enable) it as $website.conf in /etc/apache2/site-available
+website: 'demo.example.com'
+
+# Name of the custom configuration file which should be used instead of the the website template.
+# It will then be placed in /etc/apache2/sites-available/$website.conf
+#
+# customconf: 'demo.example.conf'
+
+# Set ServerAdmin (can be omitted, if customconf is set)
+serveradmin: 'webmaster@example.com'
+
+# DocumentRoot will be $documentroot/$website. If documentroot is not given, DocumentRoot defaults to /var/www/html/$website
+# TODO: should be renamed to documentroot_base
+# documentroot: '/srv/www'
+
+# Set ServerAlias
+# TODO: (list of aliases allowed)
+# webalias: 'demo2.example.com'
+
+# RedirectMatch ^/$ to a given destination
+# rootredirection: 'https://othersite.example.com'
+
+# Set 000-default.conf symlink for this website
+default_website: false
+
+# Set ScriptAlias $scriptaliasurl to "$documentroot/$scriptaliasurl"
+# scriptaliasurl: 'cgi-bin/'
+
+# Set ScriptAlias $scriptaliasurl to "$documentroot/$scriptaliaspath" instead of "$documentroot/$scriptaliasurl"
+# scriptaliaspath: 'myapp'
+
+# Enable SSL via letsencrypt (role 'letsencrypt' needs to be called before setting this to True)
+letsencrypt: false
+
+# Put custom Apache configuration fragment in vhost section
+# custom_fragment: |
+#     <Directory /srv/www/${DOMAIN}>
+#       Options -Indexes +FollowSymLinks
+#       AllowOverride All
+#     </Directory>
+```
 
 Dependencies
 ------------
 
-None, but it might be a good idea to use the role letsencrpt to deploy Let's Encrypt for the websites.
+None, but it might be a good idea to use the role [letsencrypt](https://github.com/jkirk/ansible-role-letsencrypt) to deploy Let's Encrypt for the websites.
 
 Examples
 --------
