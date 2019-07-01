@@ -39,11 +39,11 @@ Define DOMAINALIAS {{ website_webalias }}
       Allow from all
     </Proxy>
     ProxyPass /.well-known !
-    ProxyPass / {{ website_proxy }}
+    ProxyPass / "{{ website_proxy }}"
 {% if website_proxyreverse is defined %}
-    ProxyPassReverse / {{ website_proxyreverse }}
+    ProxyPassReverse / "{{ website_proxyreverse }}"
 {% else %}
-    ProxyPassReverse / {{ website_proxy }}
+    ProxyPassReverse / "{{ website_proxy }}"
 {% endif %}{# website_proxyreverse is defined #}
 {% endif %}{# website_proxy defined #}
 {% endif %}{# website_httpsonly #}
@@ -101,11 +101,11 @@ Define DOMAINALIAS {{ website_webalias }}
           Allow from all
         </Proxy>
         ProxyPass /.well-known !
-        ProxyPass / {{ website_proxy }}
+        ProxyPass / "{{ website_proxy }}"
 {% if website_proxyreverse is defined %}
-        ProxyPassReverse / {{ website_proxyreverse }}
+        ProxyPassReverse / "{{ website_proxyreverse }}"
 {% else %}
-        ProxyPassReverse / {{ website_proxy }}
+        ProxyPassReverse / "{{ website_proxy }}"
 {% endif %}{# website_proxyreverse is defined #}
 {% endif %}{# website_proxy defined #}
         CustomLog ${APACHE_LOG_DIR}/${DOMAIN}-access-ssl.log combined
