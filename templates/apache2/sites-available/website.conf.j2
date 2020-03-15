@@ -12,7 +12,7 @@ Define DOMAINALIAS {{ website_webalias }}
 {% endif %}{# website_webalias is defined #}
     ServerAdmin  {{ website_serveradmin|default('webmaster@localhost') }}
 {% if website_httpsonly %}
-    Redirect permanent / https://${DOMAIN}/
+    RedirectMatch permanent ^(?!/\.well-known/acme-challenge/).* https://${DOMAIN}$0
 {% else %}
 {% if website_rootredirection is defined %}
     RedirectMatch "^/$" "{{ rootredirection }}"
