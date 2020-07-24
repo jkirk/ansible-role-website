@@ -2,6 +2,22 @@
 # Role: website
 #
 - include_tasks: apache.yml
+
+- name: "Make sure DocumentRoot exists"
+  file:
+    path: "{{ website_documentroot_base|default('/var/www/html') }}/{{ website_domain }}"
+    owner: "{{ website_owner|default('www-data') }}"
+    group: "{{ website_group|default('www-data') }}"
+    mode: "{{ website_documentroot_mode|default('0775') }}"
+    state: directory
+- name: Deploy default / blank index.html
+  copy:
+    src: "index.html"
+    dest: "{{ website_documentroot_base|default('/var/www/html') }}/{{ website_domain }}"
+    owner: "{{ website_owner|default('www-data') }}"
+    group: "{{ website_group|default('www-data') }}"
+    mode: 0664
+    force: false
 - name: Deploy apache configuration for {{ website_domain }}
   template: src=apache2/sites-available/website.conf.j2 dest=/etc/apache2/sites-available/{{ website_domain }}.conf
   notify: reload apache2

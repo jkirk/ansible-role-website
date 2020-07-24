@@ -3,8 +3,10 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint:
-  name: yamllint
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
 platforms:
   - name: instance
     image: debian:stretch
@@ -16,5 +18,3 @@ scenario:
   name: default
 verifier:
   name: testinfra
-  lint:
-    name: flake8

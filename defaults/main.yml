@@ -15,6 +15,13 @@ website_serveradmin: 'webmaster@example.com'
 # DocumentRoot will be $website_documentroot_base/$website_domain. If website_documentroot_base is not given, DocumentRoot defaults to /var/www/html/$website
 # website_documentroot_base: '/srv/www'
 
+# DocumentRoot and the default index.html will be owned by user and group 'www-data' by default. Change with:
+# website_owner: 'www-data'
+# website_group: 'www-data'
+
+# DocumentRoot permission defaults to 0775. Change with:
+# website_documentroot_mode: '0775'
+
 # Set ServerAlias
 # TODO: (list of aliases allowed)
 # website_webalias: 'demo2.example.com'
