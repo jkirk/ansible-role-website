@@ -15,10 +15,10 @@ Define DOMAINALIAS {{ website_webalias }}
     RedirectMatch permanent ^(?!/\.well-known/acme-challenge/).* https://${DOMAIN}$0
 {% else %}
 {% if website_rootredirection is defined %}
-    RedirectMatch "^/$" "{{ website_rootredirection }}"
+    RedirectMatch permanent ^(?!/\.well-known/acme-challenge/).* {{ website_rootredirection }}$0
 {% else %}
     DocumentRoot {{ website_documentroot_base|default('/var/www/html') }}/${DOMAIN}
-{% endif %}{# website_rootredirection is defined #}
+
     <Directorymatch "^/.*/\.git+/">
       Order deny,allow
       Deny from all
@@ -27,13 +27,15 @@ Define DOMAINALIAS {{ website_webalias }}
       Order allow,deny
       Deny from all
     </Files>
+
+{% endif %}{# website_rootredirection is defined #}
 {% if website_scriptalias_url is defined %}
     ScriptAlias "/{{ website_scriptalias_url }}" "{{ website_documentroot_base|default('/var/www/html') }}/${DOMAIN}/{{ website_scriptalias_path|default(website_scriptalias_url) }}"
 {% endif %}{# website_scriptalias_url #}
 {% if website_proxy is defined %}
     ProxyRequests     Off
     ProxyPreserveHost On
-    AllowEncodedSlashes {{ website_encoded_slashes }}
+    AllowEncodedSlashes {{ website_encoded_slashes|default('Off') }}
     <Proxy *>
       Order deny,allow
       Allow from all
@@ -63,10 +65,9 @@ Define DOMAINALIAS {{ website_webalias }}
         ServerAlias ${DOMAINALIAS}
 {% endif %}{# website_webalias is defined #}
 {% if website_rootredirection is defined %}
-        RedirectMatch "^/$" "{{ website_rootredirection }}"
+        RedirectMatch permanent ^(?!/\.well-known/acme-challenge/).* {{ website_rootredirection }}$0
 {% else %}
         DocumentRoot {{ website_documentroot_base|default('/var/www/html') }}/${DOMAIN}
-{% endif %}{# website_rootredirection is defined #}
         <Directorymatch "^/.*/\.git+/">
           Order deny,allow
           Deny from all
@@ -75,11 +76,13 @@ Define DOMAINALIAS {{ website_webalias }}
           Order allow,deny
           Deny from all
         </Files>
+
+{% endif %}{# website_rootredirection is defined #}
 {% if website_scriptalias_url is defined %}
         ScriptAlias "/{{ website_scriptalias_url }}" "{{ website_documentroot_base|default('/var/www/html') }}/${DOMAIN}/{{ website_scriptalias_path|default(website_scriptalias_url) }}"
 {% endif %}{# website_scriptalias_url is defined #}
         SSLEngine on
-{% if website_letsencrypt %}
+{% if website_letsencrypt|default(false) %}
         SSLCertificateFile    /etc/ssl/letsencrypt/certs/${DOMAIN}/fullchain.pem
         SSLCertificateKeyFile /etc/ssl/letsencrypt/certs/${DOMAIN}/privkey.pem
 {% else %}
@@ -89,7 +92,7 @@ Define DOMAINALIAS {{ website_webalias }}
 {% else %}
         SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
         SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
-{% endif %}{# cert is defined #}
+{% endif %}{# website_cert is defined #}
 {% endif %}{# website_letsencrypt #}
 
 {% if website_proxy is defined %}
