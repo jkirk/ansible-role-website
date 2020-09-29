@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+    - name: "Include ansible-role-website"
+      include_role:
+        name: "ansible-role-website"
+      vars:
+        website_domain: 'example.com'
