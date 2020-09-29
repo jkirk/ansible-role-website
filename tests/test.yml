@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - ansible-role-website
+    - { role: ansible-role-website, website_domain: 'example.com' }
