@@ -15,7 +15,7 @@ Define DOMAINALIAS {{ website_webalias }}
     RedirectMatch permanent ^(?!/\.well-known/acme-challenge/).* https://${DOMAIN}$0
 {% else %}
 {% if website_rootredirection is defined %}
-    RedirectMatch "^/$" "{{ rootredirection }}"
+    RedirectMatch "^/$" "{{ website_rootredirection }}"
 {% else %}
     DocumentRoot {{ website_documentroot_base|default('/var/www/html') }}/${DOMAIN}
 {% endif %}{# website_rootredirection is defined #}
@@ -63,7 +63,7 @@ Define DOMAINALIAS {{ website_webalias }}
         ServerAlias ${DOMAINALIAS}
 {% endif %}{# website_webalias is defined #}
 {% if website_rootredirection is defined %}
-        RedirectMatch "^/$" "{{ rootredirection }}"
+        RedirectMatch "^/$" "{{ website_rootredirection }}"
 {% else %}
         DocumentRoot {{ website_documentroot_base|default('/var/www/html') }}/${DOMAIN}
 {% endif %}{# website_rootredirection is defined #}
@@ -83,7 +83,7 @@ Define DOMAINALIAS {{ website_webalias }}
         SSLCertificateFile    /etc/ssl/letsencrypt/certs/${DOMAIN}/fullchain.pem
         SSLCertificateKeyFile /etc/ssl/letsencrypt/certs/${DOMAIN}/privkey.pem
 {% else %}
-{% if cert is defined and cert %}
+{% if website_cert is defined and website_cert %}
         SSLCertificateFile    /etc/ssl/certs/${DOMAIN}.crt
         SSLCertificateKeyFile /etc/ssl/private/{{ ansible_fqdn }}.key
 {% else %}

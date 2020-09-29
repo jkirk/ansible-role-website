@@ -47,8 +47,15 @@ website_encoded_slashes: 'Off'
 # Set ScriptAlias $website_scriptalias_url to "$website_documentroot_base/$website_scriptalias_path" instead of "$website_documentroot_base/$website_scriptalias_url"
 # website_scriptalias_path: 'myapp'
 
-# Enable SSL via website_letsencrypt (role 'website_letsencrypt' needs to be called before setting this to True)
+# Enable SSL/TLS certificate via website_letsencrypt (role 'website_letsencrypt' needs to be called before setting this to True)
 website_letsencrypt: false
+
+# Enable custom SSL/TLS certificate via website_cert.
+# A certificate needs to exists in file /etc/ssl/certs/${DOMAIN}.crt
+# and the private key needs to exist in file /etc/ssl/private/{{ ansible_fqdn }}.key
+website_cert: false
+
+# ssl-cert-snakeoil.pem and ssl-cert-snakeoil.key are used if website_letsencrypt and website_cert are set to false.
 
 # Always redirect http to https:
 website_httpsonly: false
