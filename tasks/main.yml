@@ -10,6 +10,7 @@
     group: "{{ website_group|default('www-data') }}"
     mode: "{{ website_documentroot_mode|default('0775') }}"
     state: directory
+  when: website_rootredirection is not defined
 - name: Deploy default / blank index.html
   copy:
     src: "index.html"
@@ -18,6 +19,7 @@
     group: "{{ website_group|default('www-data') }}"
     mode: 0664
     force: false
+  when: website_rootredirection is not defined
 - name: Deploy apache configuration for {{ website_domain }}
   template: src=apache2/sites-available/website.conf.j2 dest=/etc/apache2/sites-available/{{ website_domain }}.conf
   notify: reload apache2
