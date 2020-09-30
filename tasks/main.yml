@@ -10,7 +10,7 @@
     group: "{{ website_group|default('www-data') }}"
     mode: "{{ website_documentroot_mode|default('0775') }}"
     state: directory
-  when: website_rootredirection is not defined
+  when: not website_rootredirection is defined
 - name: Deploy default / blank index.html
   copy:
     src: "index.html"
@@ -19,19 +19,35 @@
     group: "{{ website_group|default('www-data') }}"
     mode: 0664
     force: false
-  when: website_rootredirection is not defined
+  when: not website_rootredirection is defined
+
 - name: Deploy apache configuration for {{ website_domain }}
-  template: src=apache2/sites-available/website.conf.j2 dest=/etc/apache2/sites-available/{{ website_domain }}.conf
+  template:
+    src: "apache2/sites-available/website.conf.j2"
+    dest: "/etc/apache2/sites-available/{{ website_domain }}.conf"
+    owner: "root"
+    group: "root"
+    mode: 0444
   notify: reload apache2
   when: not website_customconf is defined
 - name: Deploy custom apache configuration for {{ website_domain }}
-  copy: src={{ website_customconf }} dest=/etc/apache2/sites-available/{{ website_domain }}.conf
+  copy:
+    src: "{{ website_customconf }}"
+    dest: "/etc/apache2/sites-available/{{ website_domain }}.conf"
+    owner: "root"
+    group: "root"
+    mode: 0444
   notify: reload apache2
   when: website_customconf is defined
+
 - name: Enable apache configuration for {{ website_domain }}
-  file: src=/etc/apache2/sites-available/{{ website_domain }}.conf dest=/etc/apache2/sites-enabled/{{ website_domain }}.conf state=link
+  file:
+    src: "../sites-available/{{ website_domain }}.conf"
+    dest: "/etc/apache2/sites-enabled/{{ website_domain }}.conf"
+    state: link
   notify: reload apache2
   when: not ansible_check_mode
+
 - name: Set default website (000-default.conf)
   file:
     src: "{{ website_domain }}.conf"
