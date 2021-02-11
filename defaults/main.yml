@@ -26,8 +26,11 @@ website_serveradmin: 'webmaster@example.com'
 # TODO: (list of aliases allowed)
 # website_webalias: 'demo2.example.com'
 
-# RedirectMatch ^/$ to a given destination
+# RedirectMatch "^(?!/\.well-known/acme-challenge/).*" to a given destination
 # website_rootredirection: 'https://othersite.example.com'
+
+# RewriteRule "^/$" to a given (local) destination
+# website_rootrewrite: '/foo'
 
 # Set 000-default.conf symlink for this website
 website_default: false

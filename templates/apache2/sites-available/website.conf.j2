@@ -17,6 +17,10 @@ Define DOMAINALIAS {{ website_webalias }}
 {% if website_rootredirection is defined %}
     RedirectMatch permanent ^(?!/\.well-known/acme-challenge/).* {{ website_rootredirection }}$0
 {% else %}
+{% if website_rootrewrite is defined %}
+    RewriteEngine On
+    RewriteRule "^/$" "{{ website_rootrewrite }}"
+{% endif %}{# website_rootrewrite is defined #}
     DocumentRoot {{ website_documentroot_base|default('/var/www/html') }}/${DOMAIN}
 
     <Directorymatch "^/.*/\.git+/">
@@ -68,7 +72,12 @@ Define DOMAINALIAS {{ website_webalias }}
 {% if website_rootredirection is defined %}
         RedirectMatch permanent ^(?!/\.well-known/acme-challenge/).* {{ website_rootredirection }}$0
 {% else %}
+{% if website_rootrewrite is defined %}
+        RewriteEngine On
+        RewriteRule "^/$" "{{ website_rootrewrite }}"
+{% endif %}{# website_rootrewrite is defined #}
         DocumentRoot {{ website_documentroot_base|default('/var/www/html') }}/${DOMAIN}
+
         <Directorymatch "^/.*/\.git+/">
           Require all denied
         </Directorymatch>
