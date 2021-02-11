@@ -20,12 +20,10 @@ Define DOMAINALIAS {{ website_webalias }}
     DocumentRoot {{ website_documentroot_base|default('/var/www/html') }}/${DOMAIN}
 
     <Directorymatch "^/.*/\.git+/">
-      Order deny,allow
-      Deny from all
+      Require all denied
     </Directorymatch>
     <Files ~ "^\.git">
-      Order allow,deny
-      Deny from all
+      Require all denied
     </Files>
 
 {% endif %}{# website_rootredirection is defined #}
@@ -36,10 +34,13 @@ Define DOMAINALIAS {{ website_webalias }}
     ProxyRequests     Off
     ProxyPreserveHost On
     AllowEncodedSlashes {{ website_encoded_slashes|default('Off') }}
+{% if website_proxy_localnetonly is defined and website_proxy_localnetonly%}
     <Proxy *>
-      Order deny,allow
-      Allow from all
+      Require ip local
+      Require ip 192.168.0
+      Require ip 10.
     </Proxy>
+{% endif %}{# website_proxy_localnetonly #}
     ProxyPass /.well-known !
     ProxyPass / {{ website_proxy }}
 {% if website_proxyreverse is defined %}
@@ -69,12 +70,10 @@ Define DOMAINALIAS {{ website_webalias }}
 {% else %}
         DocumentRoot {{ website_documentroot_base|default('/var/www/html') }}/${DOMAIN}
         <Directorymatch "^/.*/\.git+/">
-          Order deny,allow
-          Deny from all
+          Require all denied
         </Directorymatch>
         <Files ~ "^\.git">
-          Order allow,deny
-          Deny from all
+          Require all denied
         </Files>
 
 {% endif %}{# website_rootredirection is defined #}
@@ -99,10 +98,13 @@ Define DOMAINALIAS {{ website_webalias }}
         ProxyRequests     Off
         ProxyPreserveHost On
         AllowEncodedSlashes {{ website_encoded_slashes }}
+{% if website_proxy_localnetonly is defined and website_proxy_localnetonly%}
         <Proxy *>
-          Order deny,allow
-          Allow from all
+          Require ip local
+          Require ip 192.168.0
+          Require ip 10.
         </Proxy>
+{% endif %}{# website_proxy_localnetonly #}
         ProxyPass /.well-known !
         ProxyPass / {{ website_proxy }}
 {% if website_proxyreverse is defined %}

@@ -38,6 +38,9 @@ website_default: false
 # Set "ProxyPassReverse / $website_proxyreverse"
 # website_proxyreverse: 'http://localhost:8080/'
 #
+# If website_proxy_localnetonly is true, Proxy is restricted to local networks (localhost, 192.168.0.0/24 10.0.0.0/8)
+# website_proxy_localnetonly: false
+#
 # Set "AllowEncodedSlashes" to 'On' (not recommended), 'Off' (default) or 'NoDecode'
 website_encoded_slashes: 'Off'
 
