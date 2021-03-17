@@ -40,10 +40,9 @@ Define DOMAINALIAS {{ website_webalias }}
     AllowEncodedSlashes {{ website_encoded_slashes|default('Off') }}
 {% if website_proxy_localnetonly is defined and website_proxy_localnetonly%}
     <Proxy *>
-      Require host localhost
-      Require ip 127.0.0.1
+      Require local
       Require ip 192.168.0
-      Require ip 10.
+      Require ip 10
     </Proxy>
 {% endif %}{# website_proxy_localnetonly #}
     ProxyPass /.well-known !
@@ -110,10 +109,9 @@ Define DOMAINALIAS {{ website_webalias }}
         AllowEncodedSlashes {{ website_encoded_slashes }}
 {% if website_proxy_localnetonly is defined and website_proxy_localnetonly%}
         <Proxy *>
-          Require host localhost
-          Require ip 127.0.0.1
+          Require local
           Require ip 192.168.0
-          Require ip 10.
+          Require ip 10
         </Proxy>
 {% endif %}{# website_proxy_localnetonly #}
         ProxyPass /.well-known !
