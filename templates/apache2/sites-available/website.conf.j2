@@ -41,6 +41,7 @@ Define DOMAINALIAS {{ website_webalias }}
 {% if website_proxy_localnetonly is defined and website_proxy_localnetonly%}
     <Proxy *>
       Require host localhost
+      Require ip 127.0.0.1
       Require ip 192.168.0
       Require ip 10.
     </Proxy>
@@ -110,6 +111,7 @@ Define DOMAINALIAS {{ website_webalias }}
 {% if website_proxy_localnetonly is defined and website_proxy_localnetonly%}
         <Proxy *>
           Require host localhost
+          Require ip 127.0.0.1
           Require ip 192.168.0
           Require ip 10.
         </Proxy>
