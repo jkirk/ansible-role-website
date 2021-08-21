@@ -122,8 +122,8 @@ Define DOMAINALIAS {{ website_webalias }}
         ProxyPassReverse / {{ website_proxy }}
 {% endif %}{# website_proxyreverse is defined #}
 {% endif %}{# website_proxy defined #}
-        CustomLog ${APACHE_LOG_DIR}/${DOMAIN}-access-ssl.log combined
-        ErrorLog ${APACHE_LOG_DIR}/${DOMAIN}-error-ssl.log
+        CustomLog ${APACHE_LOG_DIR}/${DOMAIN}-access.log combined
+        ErrorLog ${APACHE_LOG_DIR}/${DOMAIN}-error.log
 {% if website_custom_fragment is defined %}
         ## Custom Fragment ##
         {{ website_custom_fragment }}
