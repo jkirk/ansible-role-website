@@ -5,6 +5,18 @@
   hosts: all
   gather_facts: false
   tasks:
-  - name: Example assertion
+  - name: Deploy expected ansible site configuration
+    copy:
+      src: 'example.com.conf'
+      dest: '/etc/apache2/sites-available/example.com.conf'
+      mode: 0444
+      owner: root
+      group: root
+    register: apache_example_configuration
+    diff: true
+
+  - name: Assert generated ansible site configuration
     assert:
-      that: true
+      that:
+        - not apache_example_configuration.changed
+      msg: 'Unexpected change in /etc/apache2/sites-available/example.com.conf'

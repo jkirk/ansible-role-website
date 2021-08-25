@@ -1,5 +1,5 @@
 #
-# Makefile for als-ansible: install virtualenv and tests
+# Makefile for ansible molecule: install Python3 virtual environment
 #
 # force the shell used to be bash in case for some commands we want to use
 # set -o pipefail ex:
