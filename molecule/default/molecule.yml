@@ -3,15 +3,13 @@ dependency:
   name: galaxy
 lint: |
   set -e
-  yamllint .
-  ansible-lint
+  yamllint tasks
 driver:
   name: docker
 platforms:
-  - name: debian_9
-    image: debian:stretch
   - name: debian_10
-    image: debian:buster
+    image: geerlingguy/docker-debian10-ansible
+    pre_build_image: true
 provisioner:
   name: ansible
 verifier:
