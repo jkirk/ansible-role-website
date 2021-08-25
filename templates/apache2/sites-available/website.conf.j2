@@ -104,6 +104,7 @@ Define DOMAINALIAS {{ website_webalias }}
 {% endif %}{# website_letsencrypt #}
 
 {% if website_proxy is defined %}
+        SSLProxyEngine On
         ProxyRequests     Off
         ProxyPreserveHost On
         AllowEncodedSlashes {{ website_encoded_slashes }}

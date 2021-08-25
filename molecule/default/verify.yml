@@ -5,18 +5,36 @@
   hosts: all
   gather_facts: false
   tasks:
-  - name: Deploy expected ansible site configuration
+  - name: Deploy expected default apache site configuration
     copy:
-      src: 'example.com.conf'
-      dest: '/etc/apache2/sites-available/example.com.conf'
+      src: 'site1.example.com.conf'
+      dest: '/etc/apache2/sites-available/site1.example.com.conf'
       mode: 0444
       owner: root
       group: root
-    register: apache_example_configuration
+    register: site1_example_configuration
+    check_mode: true
+    diff: true
+
+  - name: Deploy expected apache proxy site configuration
+    copy:
+      src: 'site2.example.com.conf'
+      dest: '/etc/apache2/sites-available/site2.example.com.conf'
+      mode: 0444
+      owner: root
+      group: root
+    register: site2_example_configuration
+    check_mode: true
     diff: true
 
   - name: Assert generated ansible site configuration
     assert:
       that:
-        - not apache_example_configuration.changed
-      msg: 'Unexpected change in /etc/apache2/sites-available/example.com.conf'
+        - not site1_example_configuration.changed
+      msg: 'Unexpected change in /etc/apache2/sites-available/site1.example.com.conf'
+
+  - name: Assert generated ansible site configuration
+    assert:
+      that:
+        - not site2_example_configuration.changed
+      msg: 'Unexpected change in /etc/apache2/sites-available/site2.example.com.conf'

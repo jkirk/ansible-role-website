@@ -5,8 +5,14 @@
     - name: Update apt cache
       apt:
         update_cache: yes
-    - name: "Include ansible-role-website"
+    - name: "Deploy default site1.example.com site"
       include_role:
         name: "ansible-role-website"
       vars:
-        website_domain: 'example.com'
+        website_domain: 'site1.example.com'
+    - name: "Deploy site2.example.com with proxy enabled"
+      include_role:
+        name: "ansible-role-website"
+      vars:
+        website_domain: 'site2.example.com'
+        website_proxy: 'https://proxy.example.com/'
