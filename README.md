@@ -1,7 +1,7 @@
 website
 =======
 
-[![Build Status](https://travis-ci.com/jkirk/ansible-role-website.svg?branch=master)](https://travis-ci.com/jkirk/ansible-role-website)
+[![GitHub Super-Linter](https://github.com/jkirk/ansible-role-base/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
 
 A simple to role to deploy websites.
 
@@ -23,13 +23,13 @@ None, but it might be a good idea to use the role [website_letsencrypt](https://
 Examples
 --------
 
-```
+```yaml
   roles:
     - { role: jkirk.website, website_domain: 'demo.example.at', website_webalias: 'www.demo.example.at', website_rootredirection: 'https://demo2.example.com', website_serveradmin: 'webmaster@example.at', website_letsencrypt: true }
 ```
 
 or:
-```
+```yaml
   roles:
     - role: jkirk.website
       website_domain: 'demo.example.com'
@@ -56,4 +56,4 @@ MIT
 Author Information
 ------------------
 
-Darshaka Pathirana - https://synpro.solutions
+Darshaka Pathirana - <https://synpro.solutions>
