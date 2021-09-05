@@ -1,7 +1,7 @@
 website
 =======
 
-[![GitHub Super-Linter](https://github.com/jkirk/ansible-role-base/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+![Lint Code Base](https://github.com/jkirk/ansible-role-base/actions/workflows/linter.yml/badge.svg)
 
 A simple to role to deploy websites.
 
