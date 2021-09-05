@@ -2,6 +2,7 @@ website
 =======
 
 ![Lint Code Base](https://github.com/jkirk/ansible-role-website/actions/workflows/linter.yml/badge.svg)
+![Ansible Molecule](https://github.com/jkirk/ansible-role-website/actions/workflows/molecule.yml/badge.svg)
 
 A simple to role to deploy websites.
 
