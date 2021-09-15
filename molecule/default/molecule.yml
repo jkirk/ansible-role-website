@@ -10,6 +10,7 @@ platforms:
   - name: debian_10
     image: geerlingguy/docker-debian10-ansible
     pre_build_image: true
+    container_default_behavior: no_defaults
 provisioner:
   name: ansible
 verifier:
