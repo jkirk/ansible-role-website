@@ -18,8 +18,7 @@ Define DOMAINALIAS {{ website_webalias }}
     RedirectMatch permanent ^(?!/\.well-known/acme-challenge/).* {{ website_rootredirection }}$0
 {% else %}
 {% if website_rootrewrite is defined %}
-    RewriteEngine On
-    RewriteRule "^/$" "{{ website_rootrewrite }}"
+    RedirectMatch "^/$" "{{ website_rootrewrite }}"
 {% endif %}{# website_rootrewrite is defined #}
     DocumentRoot {{ website_documentroot_base|default('/var/www/html') }}/${DOMAIN}
 
@@ -73,8 +72,7 @@ Define DOMAINALIAS {{ website_webalias }}
         RedirectMatch permanent ^(?!/\.well-known/acme-challenge/).* {{ website_rootredirection }}$0
 {% else %}
 {% if website_rootrewrite is defined %}
-        RewriteEngine On
-        RewriteRule "^/$" "{{ website_rootrewrite }}"
+        RedirectMatch "^/$" "{{ website_rootrewrite }}"
 {% endif %}{# website_rootrewrite is defined #}
         DocumentRoot {{ website_documentroot_base|default('/var/www/html') }}/${DOMAIN}
 
